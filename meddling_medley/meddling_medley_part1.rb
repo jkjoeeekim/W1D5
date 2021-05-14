@@ -73,28 +73,39 @@ end
 
 
 def energetic_encoding(str, hash)
-    
+    str.chars.map! do |char| 
+        if char == " "
+            char
+        elsif hash[char].nil?
+            "?"
+        else
+            hash[char]
+        end
+    end.join("")
 end
 
 # p energetic_encoding('sent sea',
 #     'e'=>'i', 's'=>'z', 'n'=>'m', 't'=>'p', 'a'=>'u'
-# ) # 'zimp ziu'
+# ) == 'zimp ziu'
 
 # p energetic_encoding('cat',
 #     'a'=>'o', 'c'=>'k'
-# ) # 'ko?'
+# ) == 'ko?'
 
 # p energetic_encoding('hello world',
 #     'o'=>'i', 'l'=>'r', 'e'=>'a'
-# ) # '?arri ?i?r?'
+# ) == '?arri ?i?r?'
 
-# p energetic_encoding('bike', {}) # '????'
+# p energetic_encoding('bike', {}) == '????'
 
 
 def uncompress(str)
-
+    letter = []
+    times = []
+    str.chars.each_with_index { |ele, idx| idx % 2 == 0 ? letter << ele : times << ele }
+    letter.map.with_index { |char, idx| char * times[idx].to_i }.join("")
 end
 
-# uncompress('a2b4c1') # 'aabbbbc'
-# uncompress('b1o2t1') # 'boot'
-# uncompress('x3y1x2z4') # 'xxxyxxzzzz'
+# p uncompress('a2b4c1')      == 'aabbbbc'
+# p uncompress('b1o2t1')      == 'boot'
+# p uncompress('x3y1x2z4')    == 'xxxyxxzzzz'
