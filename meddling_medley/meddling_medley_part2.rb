@@ -85,23 +85,66 @@ end
 
 
 def alternating_vowel(sentence)
-
+    words = sentence.split(" ")
+    i = 0
+    words.map! do |word|
+        new_word = ""
+        if i == 0
+            new_word = remove_first_vowel(word)
+            i += 1
+        elsif i == 1
+            new_word = remove_last_vowel(word)
+            i -= 1
+        else
+            new_word = word
+        end
+        new_word
+    end
+    words.join(" ")
 end
 
-# p alternating_vowel('panthers are great animals') # "pnthers ar grat animls"
-# p alternating_vowel('running panthers are epic') # "rnning panthrs re epc"
-# p alternating_vowel('code properly please') # "cde proprly plase"
-# p alternating_vowel('my forecast predicts rain today') # "my forecst prdicts ran tday"
+def remove_first_vowel(str)
+    return str unless str.length > 2
+    str.chars.map.with_index { |char, idx| char unless idx == str.index(/[aeiou]/) }.join("")
+end
+
+def remove_last_vowel(str)
+    return str unless str.length > 2
+    str.chars.map.with_index { |char, idx| char unless idx == str.rindex(/[aeiou]/) }.join("")
+end
+
+# p alternating_vowel('panthers are great animals')       == "pnthers ar grat animls"
+# p alternating_vowel('running panthers are epic')        == "rnning panthrs re epc"
+# p alternating_vowel('code properly please')             == "cde proprly plase"
+# p alternating_vowel('my forecast predicts rain today')  == "my forecst prdicts ran tday"
 
 
 def silly_talk(sentence)
-
+    words = sentence.split(" ")
+    words.map! do |word|
+        if "aeiou".include?(word[-1])
+            word += word[-1]
+        else
+            new_word(word)
+        end
+    end
+    words.join(" ")
 end
 
-# p silly_talk('Kids like cats and dogs') # "Kibids likee cabats aband dobogs"
-# p silly_talk('Stop that scooter') # "Stobop thabat scobooboteber"
-# p silly_talk('They can code') # "Thebey caban codee"
-# p silly_talk('He flew to Italy') # "Hee flebew too Ibitabaly"
+def new_word(str)
+    str.chars.map.with_index do |char, idx|
+        if "aeiou".include?(char.downcase)
+            char + "b" + char.downcase
+        else
+            char
+        end
+    end.join("")
+end
+
+# p silly_talk('Kids like cats and dogs') == "Kibids likee cabats aband dobogs"
+# p silly_talk('Stop that scooter')       == "Stobop thabat scobooboteber"
+# p silly_talk('They can code')           == "Thebey caban codee"
+# p silly_talk('He flew to Italy')        == "Hee flebew too Ibitabaly"
 
 
 def compress(str)
