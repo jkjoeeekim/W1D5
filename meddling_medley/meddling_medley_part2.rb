@@ -2,9 +2,9 @@ def conjunct_select(array, *prcs)
     array.select { |ele| prcs.all? { |prc| prc.call(ele) } }
 end
 
-is_positive = Proc.new { |n| n > 0 }
-is_odd = Proc.new { |n| n.odd? }
-less_than_ten = Proc.new { |n| n < 10 }
+# is_positive = Proc.new { |n| n > 0 }
+# is_odd = Proc.new { |n| n.odd? }
+# less_than_ten = Proc.new { |n| n < 10 }
 
 # p conjunct_select([4, 8, -2, 11, 7, -3, 13], is_positive)                           == [4, 8, 11, 7, 13]
 # p conjunct_select([4, 8, -2, 11, 7, -3, 13], is_positive, is_odd)                   == [11, 7, 13]
@@ -59,27 +59,29 @@ end
 
 
 def disjunct_select(array, *prcs)
-
+    array.select do |ele|
+        prcs.any? { |prc| prc.call(ele) }
+    end
 end
 
-longer_four = Proc.new { |s| s.length > 4 }
-contains_o = Proc.new { |s| s.include?('o') }
-starts_a = Proc.new { |s| s[0] == 'a' }
+# longer_four = Proc.new { |s| s.length > 4 }
+# contains_o = Proc.new { |s| s.include?('o') }
+# starts_a = Proc.new { |s| s[0] == 'a' }
 
-p disjunct_select(['ace', 'dog', 'apple', 'teeming', 'boot', 'zip'],
-    longer_four,
-) # ["apple", "teeming"]
+# p disjunct_select(['ace', 'dog', 'apple', 'teeming', 'boot', 'zip'],
+#     longer_four,
+# ) == ["apple", "teeming"]
 
-p disjunct_select(['ace', 'dog', 'apple', 'teeming', 'boot', 'zip'],
-    longer_four,
-    contains_o
-) # ["dog", "apple", "teeming", "boot"]
+# p disjunct_select(['ace', 'dog', 'apple', 'teeming', 'boot', 'zip'],
+#     longer_four,
+#     contains_o
+# ) == ["dog", "apple", "teeming", "boot"]
 
-p disjunct_select(['ace', 'dog', 'apple', 'teeming', 'boot', 'zip'],
-    longer_four,
-    contains_o,
-    starts_a
-) # ["ace", "dog", "apple", "teeming", "boot"]
+# p disjunct_select(['ace', 'dog', 'apple', 'teeming', 'boot', 'zip'],
+#     longer_four,
+#     contains_o,
+#     starts_a
+# ) == ["ace", "dog", "apple", "teeming", "boot"]
 
 
 def alternating_vowel(sentence)
@@ -103,9 +105,29 @@ end
 
 
 def compress(str)
-
+    characters = str.split("")
+    compressed = ""
+    previous_char = ""
+    removed = false
+    count = 1
+    characters.each_with_index do |char, idx|
+        if (char == previous_char) && ((characters.length - 1) == idx)
+            count += 1
+            compressed += "#{count}"
+        elsif char == previous_char
+            count += 1
+        elsif char != previous_char && count == 1
+            compressed += char
+        else
+            compressed += "#{count}"
+            compressed += char
+            count = 1
+        end
+        previous_char = char
+    end
+    compressed
 end
 
-# p compress('aabbbbc')   # "a2b4c"
-# p compress('boot')      # "bo2t"
-# p compress('xxxyxxzzzz')# "x3yx2z4"
+# p compress('aabbbbc')       == "a2b4c"
+# p compress('boot')          == "bo2t"
+# p compress('xxxyxxzzzz')    == "x3yx2z4"

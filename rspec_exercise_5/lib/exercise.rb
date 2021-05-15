@@ -56,13 +56,11 @@ end
 def silly_syllables(sentence)
     new_sentence = []
     sentence.split(" ").each do |word|
-        new_word = ""
         if word.chars.count { |char| "aeiou".include?(char.downcase) } < 2
-            new_word = word
+            new_sentence << word
         else
-            new_word = word[word.index(/[aeiou]/)..word.rindex(/[aeiou]/)]
+            new_sentence << word[word.index(/[aeiou]/)..word.rindex(/[aeiou]/)]
         end
-        new_sentence << new_word
     end
     new_sentence.join(" ")
 end
