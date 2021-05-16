@@ -13,12 +13,11 @@ end
 
 def convert_pig_latin(sentence)
     words = sentence.split(" ")
-    vowels = "aeiou"
     words.map! do |word|
         first_vowel_idx = word.index(/[aeiou]/)
         if word.length < 3
             word
-        elsif vowels.include?(word[0].downcase)
+        elsif "aeiou".include?(word[0].downcase)
             word + "yay"
         elsif word[0] == word[0].upcase
             word[first_vowel_idx].upcase + word[(first_vowel_idx + 1)..-1] + word[0].downcase + word[1...first_vowel_idx] + "ay"
@@ -39,11 +38,10 @@ end
 
 def reverberate(sentence)
     words = sentence.split(" ")
-    vowels = "aeiou"
     words.map! do |word|
         if word.length < 3
             word
-        elsif vowels.include?(word[-1].downcase)
+        elsif "aeiou".include?(word[-1].downcase)
             word + word.downcase
         else
             word + word[word.rindex(/[aeiou]/)..-1].downcase
@@ -147,7 +145,6 @@ def compress(str)
     characters = str.split("")
     compressed = ""
     previous_char = ""
-    removed = false
     count = 1
     characters.each_with_index do |char, idx|
         if (char == previous_char) && ((characters.length - 1) == idx)
