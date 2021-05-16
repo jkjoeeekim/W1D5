@@ -88,17 +88,13 @@ def alternating_vowel(sentence)
     words = sentence.split(" ")
     i = 0
     words.map! do |word|
-        new_word = ""
         if i == 0
-            new_word = remove_first_vowel(word)
             i += 1
-        elsif i == 1
-            new_word = remove_last_vowel(word)
-            i -= 1
+            remove_first_vowel(word)
         else
-            new_word = word
+            i -= 1
+            remove_last_vowel(word)
         end
-        new_word
     end
     words.join(" ")
 end
